@@ -39,10 +39,10 @@ export default function SearchBar({ onSearch, isLoading, textColor = 'text-white
             placeholder="Search city..."
             className={`w-full pl-12 pr-4 py-3 sm:py-4 rounded-xl border-2 ${
               isDark
-                ? 'border-white/30 bg-white/20 text-white placeholder-white/60'
-                : 'border-gray-700/30 bg-gray-700/20 text-gray-900 placeholder-gray-700/60'
-            } backdrop-blur-md focus:outline-none focus:ring-2 ${
-              isDark ? 'focus:ring-white/50 focus:border-white/50' : 'focus:ring-gray-700/50 focus:border-gray-700/50'
+                ? 'border-white/40 bg-transparent text-white placeholder-white/60'
+                : 'border-gray-800/40 bg-transparent text-gray-900 placeholder-gray-800/60'
+            } backdrop-blur-sm focus:outline-none focus:ring-2 ${
+              isDark ? 'focus:ring-white/50 focus:border-white/60' : 'focus:ring-gray-800/50 focus:border-gray-800/60'
             } disabled:opacity-50 text-base sm:text-lg font-medium transition-all`}
             disabled={isLoading}
           />
@@ -52,10 +52,10 @@ export default function SearchBar({ onSearch, isLoading, textColor = 'text-white
           disabled={isLoading || !city.trim()}
           className={`px-6 sm:px-8 py-3 sm:py-4 ${
             isDark
-              ? 'bg-white/20 hover:bg-white/30 text-white border-2 border-white/40'
-              : 'bg-gray-700/20 hover:bg-gray-700/30 text-gray-900 border-2 border-gray-700/40'
-          } backdrop-blur-md rounded-xl focus:outline-none focus:ring-2 ${
-            isDark ? 'focus:ring-white/50' : 'focus:ring-gray-700/50'
+              ? 'bg-transparent hover:bg-white/10 text-white border-2 border-white/40'
+              : 'bg-transparent hover:bg-gray-800/10 text-gray-900 border-2 border-gray-800/40'
+          } backdrop-blur-sm rounded-xl focus:outline-none focus:ring-2 ${
+            isDark ? 'focus:ring-white/50' : 'focus:ring-gray-800/50'
           } disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold text-sm sm:text-base hover:scale-105 active:scale-95`}
         >
           {isLoading ? (
