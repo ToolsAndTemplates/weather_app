@@ -34,14 +34,14 @@ export default function SearchBar({ onSearch, isLoading }: SearchBarProps) {
             value={city}
             onChange={(e) => setCity(e.target.value)}
             placeholder="Search city..."
-            className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-xl border-2 border-white/30 bg-white/10 text-white placeholder-white/60 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/60 disabled:opacity-50 text-base sm:text-lg font-medium transition-all"
+            className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-xl border-2 border-white/30 bg-transparent text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/60 disabled:opacity-50 text-base sm:text-lg font-medium transition-all"
             disabled={isLoading}
           />
         </div>
         <button
           type="submit"
           disabled={isLoading || !city.trim()}
-          className="px-6 sm:px-8 py-3 sm:py-4 bg-white/20 hover:bg-white/30 text-white border-2 border-white/30 backdrop-blur-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-white/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold text-sm sm:text-base hover:scale-105 active:scale-95"
+          className="px-6 sm:px-8 py-3 sm:py-4 bg-white/20 hover:bg-white/30 text-white border-2 border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold text-sm sm:text-base hover:scale-105 active:scale-95"
         >
           {isLoading ? (
             <span className="flex items-center gap-2 justify-center">
