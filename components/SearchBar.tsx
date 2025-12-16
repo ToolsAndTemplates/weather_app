@@ -5,10 +5,9 @@ import { useState } from 'react';
 interface SearchBarProps {
   onSearch: (city: string) => void;
   isLoading: boolean;
-  textColor?: string;
 }
 
-export default function SearchBar({ onSearch, isLoading, textColor = 'text-white' }: SearchBarProps) {
+export default function SearchBar({ onSearch, isLoading }: SearchBarProps) {
   const [city, setCity] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -18,14 +17,12 @@ export default function SearchBar({ onSearch, isLoading, textColor = 'text-white
     }
   };
 
-  const isDark = textColor === 'text-white';
-
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-md lg:max-w-2xl mb-6 sm:mb-8">
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <svg
-            className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${isDark ? 'text-white/70' : 'text-gray-700'}`}
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -37,26 +34,14 @@ export default function SearchBar({ onSearch, isLoading, textColor = 'text-white
             value={city}
             onChange={(e) => setCity(e.target.value)}
             placeholder="Search city..."
-            className={`w-full pl-12 pr-4 py-3 sm:py-4 rounded-xl border-2 ${
-              isDark
-                ? 'border-white/40 bg-transparent text-white placeholder-white/60'
-                : 'border-gray-800/40 bg-transparent text-gray-900 placeholder-gray-800/60'
-            } backdrop-blur-sm focus:outline-none focus:ring-2 ${
-              isDark ? 'focus:ring-white/50 focus:border-white/60' : 'focus:ring-gray-800/50 focus:border-gray-800/60'
-            } disabled:opacity-50 text-base sm:text-lg font-medium transition-all`}
+            className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-xl border-2 border-white/30 bg-white/10 text-white placeholder-white/60 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/60 disabled:opacity-50 text-base sm:text-lg font-medium transition-all"
             disabled={isLoading}
           />
         </div>
         <button
           type="submit"
           disabled={isLoading || !city.trim()}
-          className={`px-6 sm:px-8 py-3 sm:py-4 ${
-            isDark
-              ? 'bg-transparent hover:bg-white/10 text-white border-2 border-white/40'
-              : 'bg-transparent hover:bg-gray-800/10 text-gray-900 border-2 border-gray-800/40'
-          } backdrop-blur-sm rounded-xl focus:outline-none focus:ring-2 ${
-            isDark ? 'focus:ring-white/50' : 'focus:ring-gray-800/50'
-          } disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold text-sm sm:text-base hover:scale-105 active:scale-95`}
+          className="px-6 sm:px-8 py-3 sm:py-4 bg-white/20 hover:bg-white/30 text-white border-2 border-white/30 backdrop-blur-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-white/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold text-sm sm:text-base hover:scale-105 active:scale-95"
         >
           {isLoading ? (
             <span className="flex items-center gap-2 justify-center">
@@ -67,7 +52,7 @@ export default function SearchBar({ onSearch, isLoading, textColor = 'text-white
               <span className="hidden sm:inline">Searching...</span>
             </span>
           ) : (
-            '🔍 Search'
+            'Search'
           )}
         </button>
       </div>
