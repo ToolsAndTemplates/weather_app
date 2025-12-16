@@ -5,9 +5,10 @@ import { useState } from 'react';
 interface SearchBarProps {
   onSearch: (city: string) => void;
   isLoading: boolean;
+  textColor?: string;
 }
 
-export default function SearchBar({ onSearch, isLoading }: SearchBarProps) {
+export default function SearchBar({ onSearch, isLoading, textColor = 'text-white' }: SearchBarProps) {
   const [city, setCity] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -17,26 +18,41 @@ export default function SearchBar({ onSearch, isLoading }: SearchBarProps) {
     }
   };
 
+  const isDark = textColor === 'text-white';
+
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-md lg:max-w-lg mb-6 sm:mb-8 px-4">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
         <div className="relative flex-1">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl sm:text-2xl">
-            🔍
-          </span>
+          <svg
+            className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-white/90' : 'text-gray-800'}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
           <input
             type="text"
             value={city}
             onChange={(e) => setCity(e.target.value)}
             placeholder="Enter city name..."
-            className="w-full pl-12 sm:pl-14 pr-4 py-3 sm:py-4 rounded-xl border-2 border-white/30 bg-white/20 backdrop-blur-sm text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 focus:bg-white/30 disabled:opacity-50 text-base sm:text-lg font-medium transition-all"
+            className={`w-full pl-12 sm:pl-14 pr-4 py-3 sm:py-4 rounded-xl border-2 ${
+              isDark
+                ? 'border-white/30 bg-white/20 text-white placeholder-white/70 focus:ring-white/50 focus:border-white/50 focus:bg-white/30'
+                : 'border-gray-800/30 bg-gray-800/20 text-gray-800 placeholder-gray-800/70 focus:ring-gray-800/50 focus:border-gray-800/50 focus:bg-gray-800/30'
+            } backdrop-blur-sm focus:outline-none focus:ring-2 disabled:opacity-50 text-base sm:text-lg font-medium transition-all`}
             disabled={isLoading}
           />
         </div>
         <button
           type="submit"
           disabled={isLoading || !city.trim()}
-          className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 rounded-xl hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold text-sm sm:text-base shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+          className={`px-6 sm:px-8 py-3 sm:py-4 ${
+            isDark
+              ? 'bg-white text-blue-600 hover:bg-white/90 focus:ring-white'
+              : 'bg-gray-800 text-white hover:bg-gray-800/90 focus:ring-gray-800'
+          } rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold text-sm sm:text-base shadow-lg hover:shadow-xl hover:scale-105 active:scale-95`}
         >
           {isLoading ? (
             <span className="flex items-center gap-2">
