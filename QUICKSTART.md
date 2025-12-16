@@ -11,9 +11,10 @@ Then open **http://localhost:3000** in your browser.
 
 ## What You'll See
 
-1. **Beautiful Landing Page** with a dynamic gradient background
-2. **Search Bar** to enter any city name
-3. **Quick City Buttons** (London, New York, Tokyo, Paris) to test immediately
+1. **Automatic Location Detection** - The app will detect your location via IP and show local weather
+2. **Beautiful Landing Page** with a dynamic gradient background
+3. **Search Bar** to enter any city name
+4. **Quick City Buttons** (Baku, London, New York, Tokyo, Paris) to test immediately
 4. **Current Weather Card** showing:
    - Temperature and weather condition
    - Feels like temperature
@@ -24,6 +25,13 @@ Then open **http://localhost:3000** in your browser.
 5. **7-Day Forecast** with daily predictions
 
 ## Features Highlights
+
+### 🌍 Auto Location Detection
+The app automatically detects your location when you visit:
+- Uses IP-based geolocation (no permissions required)
+- Two fallback services for reliability
+- Shows your detected location at the bottom
+- Falls back to Baku if detection fails
 
 ### 🎨 Dynamic Backgrounds
 The app changes its background color based on weather:

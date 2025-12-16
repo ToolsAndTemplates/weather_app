@@ -8,7 +8,8 @@ A beautiful, responsive weather application built with Next.js 14, TypeScript, a
 
 ## ✨ Features
 
-- 🌍 **Global Weather Search** - Get weather for any city worldwide
+- 🌍 **Auto Location Detection** - Automatically detects your location via IP address
+- 🔍 **Global Weather Search** - Get weather for any city worldwide
 - 📊 **7-Day Forecast** - See weather predictions for the week ahead
 - 🎨 **Dynamic Themes** - Background changes based on current weather conditions
 - 📱 **Fully Responsive** - Optimized for mobile, tablet, and desktop
@@ -16,6 +17,7 @@ A beautiful, responsive weather application built with Next.js 14, TypeScript, a
 - 🎭 **Beautiful Animations** - Smooth transitions and hover effects
 - 🔒 **No API Key Required** - Free and unlimited access
 - 🌡️ **Detailed Metrics** - Temperature, humidity, wind speed, pressure, and more
+- 🔄 **Smart Fallback** - Falls back to Baku if location detection fails
 
 ## 🚀 Getting Started
 
@@ -131,9 +133,17 @@ This app uses the **Open-Meteo API**, which provides:
 - ✅ Accurate forecasts
 - ✅ Multiple weather parameters
 
-The app makes two API calls:
-1. **Geocoding API** - Converts city names to coordinates
-2. **Weather API** - Fetches weather data using coordinates
+### How it works:
+1. **IP Geolocation** (ipapi.co) - Automatically detects your location from IP
+2. **Geocoding API** - Converts city names to coordinates
+3. **Weather API** - Fetches weather data using coordinates
+
+### Auto-Location Detection:
+The app automatically detects your location when you first visit:
+- Uses **ipapi.co** for IP-based geolocation (no API key required)
+- Falls back to **ip-api.com** if the primary service fails
+- If both fail, defaults to **Baku, Azerbaijan**
+- Your detected location is shown at the bottom of the page
 
 ## 📱 Browser Support
 
@@ -145,7 +155,7 @@ The app makes two API calls:
 
 ## 🎯 Future Enhancements
 
-- [ ] Geolocation support (auto-detect user location)
+- [x] ~~Geolocation support (auto-detect user location)~~ ✅ Completed!
 - [ ] Hourly forecast view
 - [ ] Weather alerts and notifications
 - [ ] Multiple location favorites

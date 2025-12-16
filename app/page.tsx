@@ -6,14 +6,17 @@ import WeatherCard from '@/components/WeatherCard';
 import ForecastCard from '@/components/ForecastCard';
 import { WeatherData, ForecastData } from '@/types/weather';
 import { getWeatherTheme } from '@/lib/weatherThemes';
+import { detectUserLocation, detectUserLocationBackup } from '@/lib/locationService';
 
 export default function Home() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [forecastData, setForecastData] = useState<ForecastData | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Start with true for initial load
   const [error, setError] = useState<string | null>(null);
   const [bgGradient, setBgGradient] = useState('from-blue-400 via-blue-500 to-blue-600');
   const [textColor, setTextColor] = useState('text-white');
+  const [detectedLocation, setDetectedLocation] = useState<string | null>(null);
+  const [loadingMessage, setLoadingMessage] = useState('Detecting your location...');
 
   useEffect(() => {
     if (weatherData) {
@@ -26,6 +29,7 @@ export default function Home() {
   const fetchWeather = async (city: string) => {
     setIsLoading(true);
     setError(null);
+    setLoadingMessage(`Loading weather for ${city}...`);
 
     try {
       // Fetch current weather
@@ -55,9 +59,38 @@ export default function Home() {
     }
   };
 
-  // Load Baku weather on initial page load
+  // Detect user location and load weather on initial page load
   useEffect(() => {
-    fetchWeather('Baku');
+    const initializeWeather = async () => {
+      setLoadingMessage('🌍 Detecting your location...');
+      console.log('🌍 Detecting your location...');
+
+      // Try to detect user's location from IP
+      let location = await detectUserLocation();
+
+      // If first method fails, try backup
+      if (!location) {
+        setLoadingMessage('🔄 Trying backup location service...');
+        console.log('🔄 Trying backup location service...');
+        location = await detectUserLocationBackup();
+      }
+
+      // If location detected successfully, use it
+      if (location && location.city) {
+        console.log(`📍 Location detected: ${location.city}, ${location.country}`);
+        setDetectedLocation(`${location.city}, ${location.country}`);
+        setLoadingMessage(`Loading weather for ${location.city}...`);
+        await fetchWeather(location.city);
+      } else {
+        // Fall back to Baku if detection failed
+        console.log('🏙️ Location detection failed, using Baku as default');
+        setDetectedLocation('Baku, Azerbaijan (default)');
+        setLoadingMessage('Loading weather for Baku...');
+        await fetchWeather('Baku');
+      }
+    };
+
+    initializeWeather();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -95,7 +128,7 @@ export default function Home() {
                 <div className={`animate-spin rounded-full h-16 w-16 border-b-4 ${textColor === 'text-gray-800' ? 'border-gray-800' : 'border-white'} mb-4`}></div>
                 <div className={`absolute top-0 left-0 animate-ping rounded-full h-16 w-16 border-4 ${textColor === 'text-gray-800' ? 'border-gray-800/30' : 'border-white/30'}`}></div>
               </div>
-              <p className={`${textColor} text-base sm:text-lg font-semibold`}>Loading weather data...</p>
+              <p className={`${textColor} text-base sm:text-lg font-semibold`}>{loadingMessage}</p>
               <p className={`${textColor} opacity-70 text-sm mt-2`}>Please wait</p>
             </div>
           </div>
@@ -156,6 +189,14 @@ export default function Home() {
 
         {/* Footer */}
         <div className={`mt-8 sm:mt-12 text-center ${textColor} opacity-80`}>
+          {detectedLocation && (
+            <div className="mb-4 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg inline-block">
+              <p className="text-xs sm:text-sm flex items-center gap-2 justify-center">
+                <span>📍</span>
+                <span>Detected location: <strong>{detectedLocation}</strong></span>
+              </p>
+            </div>
+          )}
           <p className="text-xs sm:text-sm drop-shadow-lg">
             Powered by Open-Meteo API • No API key required
           </p>
