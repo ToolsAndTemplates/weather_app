@@ -1,73 +1,51 @@
 'use client';
 
 import { ForecastData } from '@/types/weather';
-import Image from 'next/image';
+import { getWeatherInfo } from '@/lib/weatherCodes';
 
 interface ForecastCardProps {
   data: ForecastData;
 }
 
 export default function ForecastCard({ data }: ForecastCardProps) {
-  // Group forecasts by day and get one forecast per day (noon time preferably)
-  const dailyForecasts = data.list.reduce((acc: any[], item) => {
-    const date = new Date(item.dt * 1000).toLocaleDateString();
-    const hour = new Date(item.dt * 1000).getHours();
-
-    // Only add if we don't have this day yet, or if this is closer to noon
-    const existingIndex = acc.findIndex(
-      (f) => new Date(f.dt * 1000).toLocaleDateString() === date
-    );
-
-    if (existingIndex === -1) {
-      acc.push(item);
-    } else if (Math.abs(hour - 12) < Math.abs(new Date(acc[existingIndex].dt * 1000).getHours() - 12)) {
-      acc[existingIndex] = item;
-    }
-
-    return acc;
-  }, []).slice(0, 5);
-
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-4xl mt-6">
-      <h3 className="text-2xl font-bold text-gray-800 mb-6">5-Day Forecast</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
-        {dailyForecasts.map((day, index) => {
-          const date = new Date(day.dt * 1000);
-          const iconUrl = `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`;
+    <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6 w-full max-w-6xl mt-6 animate-fade-in">
+      <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6">7-Day Forecast</h3>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4">
+        {data.daily.time.map((date, index) => {
+          const weatherInfo = getWeatherInfo(data.daily.weathercode[index]);
+          const dateObj = new Date(date);
 
           return (
             <div
               key={index}
-              className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 text-center hover:shadow-md transition-shadow"
+              className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl p-3 sm:p-4 text-center hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer"
             >
-              <p className="text-sm font-semibold text-gray-700 mb-2">
-                {date.toLocaleDateString('en-US', { weekday: 'short' })}
+              <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-1">
+                {index === 0 ? 'Today' : dateObj.toLocaleDateString('en-US', { weekday: 'short' })}
               </p>
-              <p className="text-xs text-gray-500 mb-3">
-                {date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+              <p className="text-[10px] sm:text-xs text-gray-500 mb-2 sm:mb-3">
+                {dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </p>
-              <div className="relative w-16 h-16 mx-auto mb-2">
-                <Image
-                  src={iconUrl}
-                  alt={day.weather[0].description}
-                  fill
-                  className="object-contain"
-                />
+              <div className="text-4xl sm:text-5xl mb-2 sm:mb-3">
+                {weatherInfo.icon}
               </div>
-              <p className="text-xs text-gray-600 capitalize mb-3 h-8">
-                {day.weather[0].description}
+              <p className="text-[10px] sm:text-xs text-gray-600 capitalize mb-2 sm:mb-3 min-h-[28px] sm:min-h-[32px] leading-tight">
+                {weatherInfo.description}
               </p>
-              <div className="flex justify-center gap-2 text-sm">
+              <div className="flex flex-col sm:flex-row justify-center gap-1 sm:gap-2 text-xs sm:text-sm mb-2">
                 <span className="font-bold text-gray-800">
-                  {Math.round(day.main.temp_max)}°
+                  {Math.round(data.daily.temperature_2m_max[index])}°
                 </span>
                 <span className="text-gray-500">
-                  {Math.round(day.main.temp_min)}°
+                  {Math.round(data.daily.temperature_2m_min[index])}°
                 </span>
               </div>
-              <div className="mt-2 text-xs text-gray-600">
-                💧 {day.main.humidity}%
-              </div>
+              {data.daily.precipitation_probability_max && (
+                <div className="text-[10px] sm:text-xs text-blue-600">
+                  💧 {data.daily.precipitation_probability_max[index]}%
+                </div>
+              )}
             </div>
           );
         })}
