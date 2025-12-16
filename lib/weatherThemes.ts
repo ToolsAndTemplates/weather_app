@@ -36,9 +36,9 @@ export function getWeatherTheme(weatherCode: number): WeatherTheme {
   // Fog
   if (weatherCode === 45 || weatherCode === 48) {
     return {
-      gradient: 'from-gray-300 via-gray-400 to-gray-500',
-      textColor: 'text-gray-800',
-      accentColor: 'text-gray-600',
+      gradient: 'from-gray-500 via-gray-600 to-gray-700',
+      textColor: 'text-white',
+      accentColor: 'text-gray-200',
     };
   }
 
@@ -63,9 +63,9 @@ export function getWeatherTheme(weatherCode: number): WeatherTheme {
   // Snow
   if (weatherCode >= 71 && weatherCode <= 77 || weatherCode === 85 || weatherCode === 86) {
     return {
-      gradient: 'from-slate-200 via-slate-300 to-slate-400',
-      textColor: 'text-gray-800',
-      accentColor: 'text-blue-400',
+      gradient: 'from-slate-500 via-slate-600 to-slate-700',
+      textColor: 'text-white',
+      accentColor: 'text-blue-300',
     };
   }
 
