@@ -108,7 +108,7 @@ export default function Home() {
         </div>
 
         {/* Search Bar */}
-        <div className="w-full animate-slide-up">
+        <div className="w-full flex justify-center animate-slide-up">
           <SearchBar onSearch={fetchWeather} isLoading={isLoading} textColor={textColor} />
         </div>
 

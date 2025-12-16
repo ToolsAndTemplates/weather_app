@@ -21,7 +21,7 @@ export default function SearchBar({ onSearch, isLoading, textColor = 'text-white
   const isDark = textColor === 'text-white';
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md lg:max-w-2xl mb-6 sm:mb-8 px-4">
+    <form onSubmit={handleSubmit} className="w-full max-w-md lg:max-w-2xl mb-6 sm:mb-8">
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
         <div className="relative flex-1">
           <svg
